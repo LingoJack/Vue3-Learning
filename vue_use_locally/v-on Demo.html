@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>v-on Demo</title>
+</head>
+<body>
+	<div id="app">
+		<button @click="money">money</button>
+		<!-- 空格 -->
+		&nbsp;
+		<button @click="love">love</button>
+	</div>
+
+
+	<!-- 引入vue模块 -->
+	<script type="module">
+		import {createApp,ref} from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js'
+		//创建Vue的应用实例,mount意为挂载，即把id为app的区域挂载给创建的App上
+		createApp({
+			data(){
+				return {
+					//定义数据
+
+				}
+			},
+			methods:{
+				money:function (){
+					alert('click 1')
+				},
+				love:function (){
+					alert('click 2')
+				}
+			}
+
+		}).mount("#app")
+
+
+	</script>
+</body>
+</html>

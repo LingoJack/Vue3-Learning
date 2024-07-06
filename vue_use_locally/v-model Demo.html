@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>v-model Demo</title>
+</head>
+<body>
+    <div id="app">
+        文章分类：<input type="text" v-model="searchConditions.category"/>
+        <br/>
+        你输入的分类:<span>{{searchConditions.category}}</span>
+        <br/>
+        发布状态：<input type="text" v-model="searchConditions.status"/>
+        <br/>
+        你输入的发布状态:<span>{{searchConditions.status}}</span>
+    </div>
+
+    <script type="module">
+        import {createApp,ref} from "https://unpkg.com/vue@3/dist/vue.esm-browser.js";
+        createApp({
+            data(){
+                return {
+                    searchConditions: {
+                        category: '',
+                        status: ''
+                    }
+                }
+            },
+            methods:{
+
+            }
+        }).mount('#app')
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Axios Demo</title>
+</head>
+<body>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        /*下面的接口需要先运行本地的springboot项目
+        * 位置：D:\java_project\Springboot3_Vue3_Learning\06_前端\08_axios素材\后台接口代码\axios_demo
+        * 这个后端项目的@CrossOrigin注解表示：支持跨域
+        * */
+
+        //演示get请求
+        axios({
+            method: 'get',
+            url: 'http://localhost:8080/article/getAll'
+        }).then(result=>{
+            //成功的回调函数
+            console.log(result.data)
+
+        }).catch(err=>{
+            //失败的回调函数
+            console.log(err)
+        })
+
+        let article={
+            title: '始祖巨人之谜',
+            category: '番剧',
+            time: '2004-8-7',
+            state: 'draft'
+        }
+
+        //演示post请求
+        axios({
+            method: 'post',
+            url: 'http://localhost:8080/article/add',
+            data: article
+        }).then(res=>{
+            console.log(res.data)
+        }).catch(err=>{
+            console.log(err)
+        })
+
+        /*
+        * axios还有别名的请求方式，比如
+        * axios.get(url)
+        * axios.post(url,data)
+        * 也可以达到一样的效果
+        * */
+
+    </script>
+
+</body>
+</html>

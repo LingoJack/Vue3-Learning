@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>News</title>
+    <!-- 这个html页面结合的其他所有页面的内容，是一个综合运用-->
+</head>
+<body>
+    <div id="app">
+        <!-- 搜索框 -->
+        文章分类：<input type="text" v-model="searchConditions.category"/>
+        &nbsp;&nbsp;
+        发布状态：<input type="text" v-model="searchConditions.status"/>
+        <br/>
+
+        你输入的分类:<span>{{searchConditions.category}}</span>
+        &nbsp;&nbsp;
+        你输入的发布状态:<span>{{searchConditions.state}}</span>
+        <br/>
+        <br/>
+
+        <button @click="search">搜索</button>
+        <!-- 空格 -->
+        &nbsp
+        <button @click="clear">清空</button>
+        <br/>
+        <br/>
+
+        <!-- 表格 -->
+        <table border="1 solid" colspa="0" cellspacing="0" v-for="(article,index) in articleList">
+            <tr>
+                <!-- 表格行th，table head -->
+                <th>文章标题</th>
+                <th>分类</th>
+                <th>发表时间</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+            <tr>
+                <!-- 表格单元td， -->
+                <td>{{article.title}}</td>
+                <td>{{article.category}}</td>
+                <td>{{article.time}}</td>
+                <td>{{article.state}}</td>
+                <td>
+                    <button>编辑</button>
+                    <button>删除</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script type="module">
+        /*ES模块引入Vue3*/
+        import {createApp,ref} from "https://unpkg.com/vue@3/dist/vue.esm-browser.js";
+        createApp({
+            data(){
+                return {
+                    searchConditions: {
+                        //暂时存储搜索的条件
+                        category: '',
+                        status: ''
+                    },
+                    articleList:[ {
+                        title:"",
+                        category:"",
+                        time:"",
+                        state:""
+                    }] //用来接收从服务端返回的文章列表
+                }
+            },
+            methods: {
+                /*处理点击了搜索按钮之后的逻辑*/
+                search(){
+                    console.log('开始检索')
+                    axios.get('http://localhost:8080/article/search?category='+this.searchConditions.category+'&state='+this.searchConditions.status)
+                        .then(res=>{
+                            //成功回调
+                            this.articleList=res.data;
+                        }).catch(err=>{
+                            //失败回调
+                            console.log(err)
+                        })
+                },
+                /*处理点击了清空按钮之后的逻辑*/
+                clear(){
+                    //清空category以及state的数据
+                    //在methods对应的方法里面使用this，代表vue实例
+                    this.searchConditions.category='';
+                    this.searchConditions.status='';
+                }
+            },
+            /*mounted方法将在Vue App被挂载之后执行*/
+            mounted() {
+                /*在页面初始化的时候挂载完毕，从服务器获取数据到页面*/
+                console.log('挂载完毕，从服务器导入数据中...')
+                axios({
+                    method: 'get',
+                    url: 'http://localhost:8080/article/getAll'
+                }).then(res=>{
+                    //成功回调
+                    console.log(res.data)
+                    this.articleList=res.data;
+                    console.log('数据导入成功')
+                }).catch(err=>{
+                    //失败回调
+                    console.log(err)
+                    console.log('数据导入失败')
+                })
+
+            }
+        }).mount('#app')/*mount,即挂载vue app到id为app的组件*/
+    </script>
+
+</body>
+</html>
